@@ -2,22 +2,25 @@
 
 import { motion } from "framer-motion";
 import * as Icons from "lucide-react";
+import React from "react";
 
-function getIcon(iconName) {
-  const Icon = Icons[iconName];
+type CourseCardProps = {
+  title: string;
+  progress: number;
+  icon_name: keyof typeof Icons;
+};
 
-  return Icon ? (
-    <Icon size={20} />
-  ) : (
-    <Icons.BookOpen size={20} />
-  );
+function getIcon(iconName: keyof typeof Icons) {
+  const Icon = Icons[iconName] as React.ElementType | undefined;
+
+  return Icon ? <Icon className="text-white" size={20} /> : null;
 }
 
 export default function CourseCard({
   title,
   progress,
   icon_name,
-}) {
+}: CourseCardProps) {
   return (
     <motion.article
       variants={{
@@ -42,13 +45,10 @@ export default function CourseCard({
       }}
       className="relative overflow-hidden rounded-3xl border border-zinc-800/50 hover:border-purple-500/40 transition-colors bg-zinc-900/60 backdrop-blur-xl p-5"
     >
-
       <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 opacity-40 pointer-events-none" />
 
       <div className="relative z-10 flex items-center justify-between">
-
         <div className="flex items-center gap-3">
-
           <div className="flex items-center justify-center w-10 h-10 rounded-2xl bg-white/5 border border-white/10">
             {getIcon(icon_name)}
           </div>
@@ -58,23 +58,17 @@ export default function CourseCard({
               {title}
             </h3>
 
-            <p className="text-xs text-zinc-400 mt-1">
-              In Progress
-            </p>
+            <p className="text-xs text-zinc-400 mt-1">In Progress</p>
           </div>
-
         </div>
 
         <div className="text-sm font-medium text-purple-400">
           {progress}%
         </div>
-
       </div>
 
       <div className="relative z-10 mt-6">
-
         <div className="w-full h-2 rounded-full bg-zinc-800 overflow-hidden">
-
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
@@ -84,11 +78,8 @@ export default function CourseCard({
             }}
             className="h-full rounded-full bg-gradient-to-r from-cyan-500 to-purple-500"
           />
-
         </div>
-
       </div>
-
     </motion.article>
   );
 }
